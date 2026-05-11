@@ -7,17 +7,17 @@ https://github.com/beetbox/beets/pull/3145
 
 ### PR Summary
 
-This pull request adds a new playlist plugin to the beets music library system. Also with this plugin, users can search and filter songs in their library using M3U playlist files. Earlier, beets did not have direct support for querying tracks through playlists. The update introduces functionality to read playlist files, collect track paths, and compare them with songs available in the library. It also allows users to access playlists either by giving the full playlist path or by using playlist names from a configured playlist folder. Along with the new feature, the PR includes configuration settings, documentation updates, and test cases to make sure the playlist functionality works correctly. This improvement makes playlist management simpler and more convenient for users who already use M3U playlists.
+I selected this pull request because it introduces playlist query support using M3U playlist files in the beets music library system. Before this update, users could organize songs inside beets, but there was no direct way to search tracks through playlist files. This PR adds support for reading playlist files, extracting track paths, and matching them with songs available in the library. It also supports querying playlists using either the full playlist path or the playlist name from a configured playlist directory. Along with the main functionality, the PR includes configuration support, documentation updates, and unit tests. Overall, this feature makes playlist-based music management easier and improves compatibility with external playlist tools and music players.
 
 ### Technical Changes
 
 - Added a new `playlist.py` plugin inside the `beetsplug` module.
-- Implemented `PlaylistQuery` class for playlist-based library queries.
+- Implemented the `PlaylistQuery` class for playlist-based queries.
 - Added support for reading `.m3u` playlist files.
-- Added validation for playlist file extensions.
+- Added validation checks for playlist file extensions.
 - Added relative path handling for playlist entries.
 - Added matching logic between playlist tracks and library items.
-- Added configuration options:
+- Added configuration settings:
   - `playlist_dir`
   - `relative_to`
 - Updated documentation files:
@@ -28,15 +28,15 @@ This pull request adds a new playlist plugin to the beets music library system. 
 
 ### Implementation Approach
 
-The implementation introduces a custom query plugin named PlaylistQuery, which extends the existing query system in beets. The plugin reads M3U playlist files, extracts the track paths, and ignores comments or unsupported lines in the playlist. It supports both full playlist file paths and playlist names that are automatically searched inside the configured playlist directory.
+The implementation introduces a custom query plugin called `PlaylistQuery`, which extends the existing query system in beets. The plugin reads M3U playlist files, extracts track paths, and ignores unsupported entries or comment lines inside the playlist. It supports both full playlist file paths and playlist names stored inside the configured playlist directory.
 
-The PR also adds flexible path handling using the relative_to configuration option. Based on the configuration, playlist paths can be treated relative to the library directory, the playlist location, or a custom directory. Before matching tracks with library items, the plugin normalizes the paths to ensure proper comparison.
+The update also adds flexible path handling using the `relative_to` configuration setting. Depending on the configuration, playlist paths can be treated relative to the library directory, the playlist location, or a custom directory. Before comparing playlist tracks with library items, the implementation normalizes paths to ensure proper matching.
 
-Additional validation checks were added so that only valid playlist files are processed. Empty playlists are also handled safely to prevent query-related errors. The documentation was updated with configuration details and usage examples, and unit tests were added to verify playlist querying functionality and handling of missing playlists.
+Additional validation checks were added to make sure only valid playlist files are processed. Empty playlists are also handled safely to avoid query-related failures. The documentation was updated with usage examples and configuration details. Unit tests were included to verify playlist query functionality, missing playlist handling, and empty playlist behavior.
 
 ### Potential Impact
 
-This pull request improves the overall usability of beets by adding support for playlist-based queries. Users can now use existing M3U playlists to search and manage songs in their music library more easily, without manually selecting tracks one by one. The update also helps improve compatibility with external music players and playlist applications. Since the PR adds new playlist query handling and path management logic, the main areas affected are playlist processing, plugin configuration, and music library search functionality.
+This pull request improves playlist handling inside beets by allowing users to query songs directly through M3U playlist files. Users can now manage music collections more easily without manually filtering tracks. The update also improves compatibility with external music players and playlist applications. The main areas affected by this PR are playlist processing, plugin configuration, and library query functionality.
 
 ---
 
@@ -47,7 +47,7 @@ https://github.com/beetbox/beets/pull/3214
 
 ### PR Summary
 
-This pull request improves the BPD (Beets Player Daemon) plugin by adding support for more features from MPD protocol version 0.16. Previously, the plugin only supported version 0.14, which caused compatibility issues with some MPD clients. The update improves playlist handling, metadata display, seeking functionality, and communication between the server and MPD clients. It also adds better support for applications like ncmpcpp and mpDris2. Along with the protocol upgrade, the PR fixes problems related to playlist commands, playback details, and connection handling. The documentation and changelog were also updated to explain the new features and improvements. Overall, this update makes the BPD plugin work more smoothly with modern MPD clients.
+I selected this pull request because it improves the BPD (Beets Player Daemon) plugin by adding support for more features from MPD protocol version 0.16. Earlier, the plugin only supported version 0.14, which caused compatibility issues with some MPD clients. This PR updates the protocol version and improves playlist handling, playback behavior, metadata reporting, and communication between the server and MPD clients. It also improves compatibility with MPD applications like ncmpcpp and mpDris2. Along with the protocol update, the PR fixes issues related to playlist commands, playback details, and connection handling. Documentation and changelog files were also updated to explain the new changes and compatibility improvements.
 
 ### Technical Changes
 
@@ -58,13 +58,13 @@ This pull request improves the BPD (Beets Player Daemon) plugin by adding suppor
 - Added support for `nextsong` and `nextsongid`.
 - Improved playlist ID and range handling.
 - Added support for floating-point seek positions.
-- Improved metadata reporting for tracks.
-- Added support for additional tag types.
+- Improved metadata handling and playback information reporting.
+- Added support for additional tag fields.
 - Improved handling of connection reset errors.
-- Updated documentation in:
+- Updated documentation files:
   - `docs/plugins/bpd.rst`
   - `docs/changelog.rst`
-- Added compatibility improvements for MPD clients like `ncmpcpp` and `mpDris2`.
+- Improved compatibility with MPD clients like `ncmpcpp` and `mpDris2`.
 
 ### Implementation Approach
 
@@ -78,4 +78,4 @@ The documentation was updated to explain the new protocol support and compatibil
 
 ### Potential Impact
 
-This pull request improves the compatibility between the BPD plugin and newer MPD clients. After this update, users can connect to the beets music server using modern MPD applications with better playback support and fewer communication problems. The PR also improves playlist management, metadata handling, and playback control features. Since the changes are related to the MPD protocol implementation, the update mainly affects music playback behavior, communication between MPD clients and the server, and overall BPD functionality.
+This pull request improves compatibility between the BPD plugin and newer MPD clients. Users can now connect to the beets music server using modern MPD applications with better playback support and fewer communication problems. The PR also improves playlist management, metadata handling, and playback control features. Since the changes are related to the MPD protocol implementation, the update mainly affects music playback behavior, communication between MPD clients and the server, and overall BPD functionality.
